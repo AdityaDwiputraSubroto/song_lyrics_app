@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # song_lyrics_app
 
 A new Flutter project.
@@ -17,4 +16,3 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 =======
 # song_lyrics_app
->>>>>>> 9355ca85d3320a79a5e974895ace5f4513043244
