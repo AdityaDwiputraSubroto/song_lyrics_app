@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:song_lyrics_app/views/detail_song.dart';
 
 import '../controllers/song_controller.dart';
 import '../models/song.dart';
@@ -39,7 +40,15 @@ class _SongListScreenTestState extends State<SongListScreenTest> {
                       setState(() {});
                     },
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailTestScreen(
+                                song: song,
+                              )),
+                    );
+                  },
                 );
               },
             );
