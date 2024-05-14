@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:song_lyrics_app/services/admin_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:song_lyrics_app/views/test_auth.dart';
 
 class AuthController {
   final AdminService _adminService = AdminService();
@@ -21,6 +23,23 @@ class AuthController {
     } catch (e) {
       print('Login error : $e');
     }
+  }
+
+  void logout(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return LoginTest();
+      }),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Logout Success'),
+      ),
+    );
   }
 
   Future<bool> isLoggedIn() async {

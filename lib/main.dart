@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:song_lyrics_app/views/test_add_lyric.dart';
+import 'package:song_lyrics_app/views/test_list_favorite.dart';
 import 'package:song_lyrics_app/views/test_list_music.dart';
 
 void main() {

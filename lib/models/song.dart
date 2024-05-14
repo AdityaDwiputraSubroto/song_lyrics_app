@@ -3,6 +3,7 @@ class Song {
   final String title;
   final String artist;
   final String lyrics;
+  String? imageName;
   final bool favorited;
 
   Song({
@@ -10,6 +11,7 @@ class Song {
     required this.title,
     required this.artist,
     required this.lyrics,
+    this.imageName,
     required this.favorited,
   });
 
@@ -18,6 +20,7 @@ class Song {
       'title': title,
       'artist': artist,
       'lyrics': lyrics,
+      'imageName': imageName,
       'favorited': favorited ? 1 : 0,
     };
   }

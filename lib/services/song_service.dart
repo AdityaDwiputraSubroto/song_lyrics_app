@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:song_lyrics_app/models/login.dart';
 import 'package:song_lyrics_app/models/song.dart';
@@ -40,6 +41,26 @@ class SongService {
         title: maps[i]['title'],
         artist: maps[i]['artist'],
         lyrics: maps[i]['lyrics'],
+        imageName: maps[i]['imageName'],
+        favorited: maps[i]['favorited'] == 1,
+      );
+    });
+  }
+
+  Future<List<Song?>> getAllFavorites() async {
+    final db = await _dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      DatabaseHelper.songsTable,
+      where: 'favorited = ?',
+      whereArgs: [1],
+    );
+    return List.generate(maps.length, (i) {
+      return Song(
+        id: maps[i]['id'],
+        title: maps[i]['title'],
+        artist: maps[i]['artist'],
+        lyrics: maps[i]['lyrics'],
+        imageName: maps[i]['imageName'],
         favorited: maps[i]['favorited'] == 1,
       );
     });
@@ -53,5 +74,9 @@ class SongService {
       where: 'id = ?',
       whereArgs: [songId],
     );
+  }
+
+  Future<void> saveImage(String imagePath, String newImagePath) async {
+    final File newImage = await File(imagePath).copy(newImagePath);
   }
 }
