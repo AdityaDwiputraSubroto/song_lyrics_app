@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:song_lyrics_app/views/test_add_lyric.dart';
-import 'package:song_lyrics_app/views/test_list_favorite.dart';
-import 'package:song_lyrics_app/views/test_list_music.dart';
+import 'package:song_lyrics_app/views/add_lyrics_screen.dart';
+import 'package:song_lyrics_app/views/initializer.dart';
+import 'package:song_lyrics_app/views/list_favorite_screen.dart';
+import 'package:song_lyrics_app/views/list_music_screen.dart';
+import 'package:song_lyrics_app/views/profile_screen.dart';
+import 'package:song_lyrics_app/views/register_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +38,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: SongListScreenTest(),
+      home: Initializer(),
     );
   }
 }

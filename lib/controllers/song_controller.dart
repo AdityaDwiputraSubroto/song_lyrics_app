@@ -6,11 +6,13 @@ import 'package:song_lyrics_app/services/admin_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:song_lyrics_app/services/song_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:song_lyrics_app/views/list_music_screen.dart';
 
 class SongController {
   final SongService _songService = SongService();
 
-  Future<void> addSong(Song song, String? imagePath) async {
+  Future<void> addSong(
+      BuildContext context, Song song, String? imagePath) async {
     try {
       _songService.insertSong(song);
       if (imagePath != null && song.imageName != null) {
@@ -18,6 +20,12 @@ class SongController {
       }
       print(song.imageName);
       print('add song success');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) {
+          return SongListScreen();
+        }),
+      );
     } catch (e) {
       print('add song error : $e');
     }

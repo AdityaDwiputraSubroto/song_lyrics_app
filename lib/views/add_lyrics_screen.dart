@@ -116,7 +116,7 @@ class _AddSongTestScreenState extends State<AddSongTestScreen> {
                   print(_lyricsController.text);
 
                   songController.addSong(
-                      song, _imagePath != null ? _imagePath : '');
+                      context, song, _imagePath != null ? _imagePath : '');
                   //Navigator.pop(context);
                 },
                 child: Text('Add Song'),

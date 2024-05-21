@@ -23,4 +23,46 @@ class AdminService {
 
     return null;
   }
+
+  Future<bool> register(String username, String password) async {
+    final db = await _dbHelper.database;
+    final result = await db.insert(
+      DatabaseHelper.adminTable,
+      {'username': username, 'password': password},
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print(result);
+    var databasesPath = await getDatabasesPath();
+    print(databasesPath);
+
+    return true;
+  }
+
+  Future<bool> updatePassword(int id, String password) async {
+    final db = await _dbHelper.database;
+    final result = await db.rawUpdate(
+        'UPDATE ${DatabaseHelper.adminTable} SET password = ? WHERE id = $id',
+        [password]);
+    print(result);
+    var databasesPath = await getDatabasesPath();
+    print(databasesPath);
+    return true;
+  }
+
+  Future<bool> updateUsername(int id, String username) async {
+    final db = await _dbHelper.database;
+    final result = await db.rawUpdate(
+        'UPDATE ${DatabaseHelper.adminTable} SET username = ? WHERE id = $id',
+        [username]);
+    print(result);
+    var databasesPath = await getDatabasesPath();
+    print(databasesPath);
+    return true;
+  }
+
+  Future<bool> checkAdminExist() async {
+    final db = await _dbHelper.database;
+    final result = await db.query('admin');
+    return result.isNotEmpty;
+  }
 }
