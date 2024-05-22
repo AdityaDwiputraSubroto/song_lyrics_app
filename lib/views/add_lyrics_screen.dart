@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:song_lyrics_app/controllers/song_controller.dart';
-import 'package:song_lyrics_app/models/song.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
+import 'package:song_lyrics_app/controllers/song_controller.dart';
+import 'package:song_lyrics_app/models/song.dart';
 
 class AddSongTestScreen extends StatefulWidget {
   @override
@@ -52,76 +52,166 @@ class _AddSongTestScreenState extends State<AddSongTestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add New Song')),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: _titleController,
-                decoration: InputDecoration(labelText: 'Title'),
-              ),
-              TextField(
-                controller: _artistController,
-                decoration: InputDecoration(labelText: 'Artist'),
-              ),
-              TextField(
-                controller: _lyricsController,
-                decoration: InputDecoration(labelText: 'Lyrics'),
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  String? lyrics = await songController.fetchLyrics(
-                      context,
-                      _artistController.text.trim(),
-                      _titleController.text.trim());
-                  if (lyrics != null) {
-                    setState(() {
-                      _lyricsController.text = lyrics;
-                    });
-                  }
-                },
-                child: Text('Fetch Lyrics'),
-              ),
-              SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _pickImage,
-                child: Text('Pick Image'),
-              ),
-              if (_imagePath != null && _newImagePath != null) ...[
-                SizedBox(height: 16.0),
-                Text('Selected Image:'),
-                Text('Path: $_imagePath'),
-                Text('Name: $_newImagePath'),
-              ],
-              SizedBox(height: 16.0),
-              if (_imagePath != null) ...[
-                SizedBox(height: 16.0),
-                Text('Selected Image:'),
-                Image.file(File(_imagePath!)),
-              ],
-              ElevatedButton(
-                onPressed: () {
-                  final song = Song(
-                    title: _titleController.text,
-                    artist: _artistController.text,
-                    lyrics: _lyricsController.text,
-                    imageName: _newImagePath != null ? _newImagePath : null,
-                    favorited: false, // Default to false
-                  );
-                  print(_lyricsController.text);
+      appBar: AppBar(
+        title: Text('Add New Song'),
+        backgroundColor: Color(0xFFb2855d),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 16.0),
+            child: Image.asset(
+              'assets/logo.png',
+              height: 40,
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: Color(0xFFe7c197),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: InkWell(
+                      onTap: _pickImage,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          border: Border.all(color: Color(0xFFb2855d)),
+                          borderRadius: BorderRadius.circular(
+                              6.0), // Menambahkan border radius
+                        ),
+                        child: _imagePath != null
+                            ? Image.file(File(_imagePath!))
+                            : Icon(Icons.image),
+                      ),
+                    ),
+                  ),
+                ),
 
-                  songController.addSong(
-                      context, song, _imagePath != null ? _imagePath : '');
-                  //Navigator.pop(context);
-                },
-                child: Text('Add Song'),
-              ),
-            ],
+                SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _titleController,
+                  decoration: InputDecoration(
+                    labelText: 'Title Song',
+                    labelStyle: TextStyle(color: Color(0xFF0b0302)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFb2855d)),
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFb2855d)),
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                  ),
+                  style: TextStyle(color: Color(0xFF0b0302)),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the title';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _artistController,
+                  decoration: InputDecoration(
+                    labelText: 'Artist',
+                    labelStyle: TextStyle(color: Color(0xFF0b0302)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFb2855d)),
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFb2855d)),
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                  ),
+                  style: TextStyle(color: Color(0xFF0b0302)),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the artist';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _lyricsController,
+                  decoration: InputDecoration(
+                    labelText: 'Lyrics',
+                    labelStyle: TextStyle(color: Color(0xFF0b0302)),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFb2855d)),
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFb2855d)),
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                  ),
+                  maxLines: 3,
+                  keyboardType: TextInputType.multiline,
+                  style: TextStyle(color: Color(0xFF0b0302)),
+                ),
+                SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        String? lyrics = await songController.fetchLyrics(
+                            context,
+                            _artistController.text.trim(),
+                            _titleController.text.trim());
+                        if (lyrics != null) {
+                          setState(() {
+                            _lyricsController.text = lyrics;
+                          });
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFb2855d),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                      ),
+                      child: Text('Fetch Lyrics'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        final song = Song(
+                          title: _titleController.text,
+                          artist: _artistController.text,
+                          lyrics: _lyricsController.text,
+                          imageName:
+                              _newImagePath != null ? _newImagePath : null,
+                          favorited: false, // Default to false
+                        );
+                        print(_lyricsController.text);
+                        songController.addSong(context, song,
+                            _imagePath != null ? _imagePath : '');
+                        //Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFb2855d),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                      ),
+                      child: Text('Add Song'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

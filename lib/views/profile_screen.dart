@@ -13,6 +13,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   String? _username;
   AuthController authController = AuthController();
+
   @override
   void initState() {
     super.initState();
@@ -59,36 +60,142 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFe7c197),
       appBar: AppBar(
-        title: Text('Profile'),
+        backgroundColor: Color(0xFFb2855d),
+        title: Text(
+          'Profile',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 16.0),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                'assets/logo.png',
+                height: 40,
+              ),
+            ),
+          ),
+        ],
+
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CircleAvatar(
-              radius: 50,
-              child: Icon(Icons.person, size: 50),
-            ),
-            SizedBox(height: 20),
-            Text(
-              _username ?? '',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _editUsername,
-              child: Text('Edit Username'),
-            ),
-            ElevatedButton(
-              onPressed: _editPassword,
-              child: Text('Edit Password'),
-            ),
-            ElevatedButton(
-              onPressed: () => authController.logout(context),
-              child: Text('Logout'),
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 50),
+              Image.asset(
+                'assets/profile-illustration.png',
+                width: 180,
+                height: 180,
+              ),
+              Text(
+                "Hello, ${_username ?? ''}",
+                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 40),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _editUsername,
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero,
+                      side: BorderSide.none,
+                    ),
+                    backgroundColor: Color(0xFFe7c197),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 12, 0, 12),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Edit Username',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // garis
+              SizedBox(
+                width: double.infinity,
+                child: Container(
+                  height: 2.0,
+                  color: Color(0xFFb2855d),
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _editPassword,
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero,
+                      side: BorderSide.none,
+                    ),
+                    backgroundColor: Color(0xFFe7c197),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 12, 0, 12),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Edit Password',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // garis
+              SizedBox(
+                width: double.infinity,
+                child: Container(
+                  height: 2.0,
+                  color: Color(0xFFb2855d),
+                ),
+              ),
+              SizedBox(height: 200),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 20,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => authController.logout(context),
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      backgroundColor: Colors.red,
+                    ),
+                    child: Text(
+                      'Logout',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
