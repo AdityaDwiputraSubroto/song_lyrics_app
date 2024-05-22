@@ -33,20 +33,20 @@ class _BottomNavbarState extends State<BottomNavbar> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
+            icon: Icon(Icons.list),
             label: 'Lyrics',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.timer),
+            icon: Icon(Icons.favorite),
             label: 'Favorites',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.info_outline_rounded),
+            icon: Icon(Icons.account_circle_sharp),
             label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.teal,
+        selectedItemColor: const Color(0xFFb2855d),
         onTap: _onItemTapped,
       ),
     );
