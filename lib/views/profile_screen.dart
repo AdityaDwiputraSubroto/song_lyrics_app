@@ -79,123 +79,124 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
         ],
-
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 50),
-              Image.asset(
-                'assets/profile-illustration.png',
-                width: 180,
-                height: 180,
-              ),
-              Text(
-                "Hello, ${_username ?? ''}",
-                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 40),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _editUsername,
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero,
-                      side: BorderSide.none,
-                    ),
-                    backgroundColor: Color(0xFFe7c197),
+        child: Stack(
+          children: [
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(height: 50),
+                  Image.asset(
+                    'assets/profile-illustration.png',
+                    width: 180,
+                    height: 180,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 12, 0, 12),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Edit Username',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
+                  Text(
+                    "Hello, ${_username ?? ''}",
+                    style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 40),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _editUsername,
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                          side: BorderSide.none,
+                        ),
+                        backgroundColor: Color(0xFFe7c197),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 12, 0, 12),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Edit Username',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              // garis
-              SizedBox(
-                width: double.infinity,
-                child: Container(
-                  height: 2.0,
-                  color: Color(0xFFb2855d),
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _editPassword,
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero,
-                      side: BorderSide.none,
+                  SizedBox(
+                    width: double.infinity,
+                    child: Container(
+                      height: 2.0,
+                      color: Color(0xFFb2855d),
                     ),
-                    backgroundColor: Color(0xFFe7c197),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 12, 0, 12),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Edit Password',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _editPassword,
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                          side: BorderSide.none,
+                        ),
+                        backgroundColor: Color(0xFFe7c197),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 12, 0, 12),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Edit Password',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              // garis
-              SizedBox(
-                width: double.infinity,
-                child: Container(
-                  height: 2.0,
-                  color: Color(0xFFb2855d),
-                ),
-              ),
-              SizedBox(height: 200),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 20,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () => authController.logout(context),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      backgroundColor: Colors.red,
+                  SizedBox(
+                    width: double.infinity,
+                    child: Container(
+                      height: 2.0,
+                      color: Color(0xFFb2855d),
                     ),
-                    child: Text(
-                      'Logout',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
+                  ),
+                  SizedBox(height: 200),
+                ],
+              ),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 20,
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => authController.logout(context),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    backgroundColor: Colors.red,
+                  ),
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
