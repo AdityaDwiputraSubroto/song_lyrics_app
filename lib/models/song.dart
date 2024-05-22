@@ -4,7 +4,7 @@ class Song {
   final String artist;
   final String lyrics;
   String? imageName;
-  final bool favorited;
+  bool favorited;
 
   Song({
     this.id,
