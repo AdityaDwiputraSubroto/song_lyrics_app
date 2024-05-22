@@ -12,8 +12,10 @@ class SongListScreen extends StatefulWidget {
 
 class _SongListScreenState extends State<SongListScreen> {
   final SongController _songController = SongController();
+  List<Song?> _allSongs = [];
   List<Song?> _filteredSongs = [];
   TextEditingController _searchController = TextEditingController();
+  bool _isSearching = false;
 
   @override
   void initState() {
@@ -25,12 +27,24 @@ class _SongListScreenState extends State<SongListScreen> {
   void _fetchSongs() async {
     final songs = await _songController.fetchAllSongs(context);
     setState(() {
-      _filteredSongs = songs!;
+      _allSongs = songs!;
+      _filteredSongs = _allSongs;
     });
   }
 
   void _filterSongs() {
-    setState(() {});
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        _filteredSongs = _allSongs;
+      } else {
+        _filteredSongs = _allSongs
+            .where((song) =>
+                song!.title.toLowerCase().contains(query) ||
+                song.artist.toLowerCase().contains(query))
+            .toList();
+      }
+    });
   }
 
   @override
@@ -45,18 +59,34 @@ class _SongListScreenState extends State<SongListScreen> {
       backgroundColor: Color(0xFFe7c197),
       appBar: AppBar(
         backgroundColor: Color(0xFFb2855d),
-        title: Text(
-          'Daftar List',
-          style: TextStyle(
-            color: Color(0xFF0b0302),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search songs...',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(color: Color(0xFF0b0302)),
+                ),
+                style: TextStyle(color: Color(0xFF0b0302), fontSize: 18),
+              )
+            : Text(
+                'Daftar List',
+                style: TextStyle(
+                  color: Color(0xFF0b0302),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
         actions: [
           IconButton(
-            icon: Icon(Icons.search, color: Color(0xFF0b0302)),
+            icon: Icon(_isSearching ? Icons.close : Icons.search,
+                color: Color(0xFF0b0302)),
             onPressed: () {
-              // Implement search functionality here
+              setState(() {
+                if (_isSearching) {
+                  _searchController.clear();
+                }
+                _isSearching = !_isSearching;
+              });
             },
           ),
         ],

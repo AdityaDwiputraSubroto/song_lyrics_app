@@ -12,9 +12,10 @@ class FavoriteListScreen extends StatefulWidget {
 
 class _FavoriteListScreenState extends State<FavoriteListScreen> {
   final SongController _songController = SongController();
-  List<Song?> _filteredSongs = [];
+  List<Song?> _favoriteSongs = [];
+  List<Song?> _filteredFavoriteSongs = [];
   TextEditingController _searchController = TextEditingController();
-
+  bool _isSearching = false;
   @override
   void initState() {
     super.initState();
@@ -25,12 +26,24 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
   void _fetchFavorites() async {
     final favorites = await _songController.fetchAllFavorites(context);
     setState(() {
-      _filteredSongs = favorites!;
+      _favoriteSongs = favorites!;
+      _filteredFavoriteSongs = _favoriteSongs;
     });
   }
 
   void _filterSongs() {
-    setState(() {});
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        _filteredFavoriteSongs = _favoriteSongs;
+      } else {
+        _filteredFavoriteSongs = _favoriteSongs
+            .where((song) =>
+                song!.title.toLowerCase().contains(query) ||
+                song.artist.toLowerCase().contains(query))
+            .toList();
+      }
+    });
   }
 
   @override
@@ -45,18 +58,34 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
       backgroundColor: Color(0xFFe7c197),
       appBar: AppBar(
         backgroundColor: Color(0xFFb2855d),
-        title: Text(
-          'Favorite Lyrics',
-          style: TextStyle(
-            color: Color(0xFF0b0302),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search songs...',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(color: Color(0xFF0b0302)),
+                ),
+                style: TextStyle(color: Color(0xFF0b0302), fontSize: 18),
+              )
+            : Text(
+                'Favorite List',
+                style: TextStyle(
+                  color: Color(0xFF0b0302),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
         actions: [
           IconButton(
-            icon: Icon(Icons.search, color: Color(0xFF0b0302)),
+            icon: Icon(_isSearching ? Icons.close : Icons.search,
+                color: Color(0xFF0b0302)),
             onPressed: () {
-              // Implement search functionality here
+              setState(() {
+                if (_isSearching) {
+                  _searchController.clear();
+                }
+                _isSearching = !_isSearching;
+              });
             },
           ),
         ],
@@ -64,9 +93,9 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
       body: Padding(
         padding: EdgeInsets.all(15.0),
         child: ListView.builder(
-          itemCount: _filteredSongs.length,
+          itemCount: _filteredFavoriteSongs.length,
           itemBuilder: (context, index) {
-            Song? song = _filteredSongs[index];
+            Song? song = _filteredFavoriteSongs[index];
             return Padding(
               padding: const EdgeInsets.all(4.0),
               child: Card(
@@ -136,9 +165,9 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
   Future<void> _toggleFavorite(int? songId, bool isFavorite) async {
     await _songController.toggleFavorite(songId, isFavorite);
     setState(() {
-      final index = _filteredSongs.indexWhere((song) => song!.id == songId);
+      final index = _favoriteSongs.indexWhere((song) => song!.id == songId);
       if (index != -1) {
-        _filteredSongs[index]!.favorited = isFavorite;
+        _favoriteSongs[index]!.favorited = isFavorite;
       }
     });
   }
