@@ -74,7 +74,8 @@ class AuthController {
         );
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => ProfileScreen()),
+            MaterialPageRoute(
+                builder: (context) => BottomNavbar(selectedIndex: 2)),
             (route) => false);
         print('Change password successful');
       } else {
@@ -105,7 +106,8 @@ class AuthController {
         );
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => ProfileScreen()),
+            MaterialPageRoute(
+                builder: (context) => BottomNavbar(selectedIndex: 2)),
             (route) => false);
         print('Change username successful');
       } else {
