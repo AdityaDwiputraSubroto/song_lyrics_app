@@ -5,12 +5,12 @@ import 'package:song_lyrics_app/views/detail_song.dart';
 import '../controllers/song_controller.dart';
 import '../models/song.dart';
 
-class FavoriteListScreenTest extends StatefulWidget {
+class FavoriteListScreen extends StatefulWidget {
   @override
-  State<FavoriteListScreenTest> createState() => _FavoriteListScreenTestState();
+  State<FavoriteListScreen> createState() => _FavoriteListScreenState();
 }
 
-class _FavoriteListScreenTestState extends State<FavoriteListScreenTest> {
+class _FavoriteListScreenState extends State<FavoriteListScreen> {
   final SongController _songController = SongController();
 
   @override

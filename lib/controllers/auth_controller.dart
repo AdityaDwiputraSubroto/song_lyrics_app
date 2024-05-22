@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:song_lyrics_app/views/list_music_screen.dart';
 import 'package:song_lyrics_app/views/login_screen.dart';
 import 'package:song_lyrics_app/views/profile_screen.dart';
+import 'package:song_lyrics_app/views/bottom_navbar.dart';
 
 class AuthController {
   final AdminService _adminService = AdminService();
@@ -23,7 +24,7 @@ class AuthController {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) {
-            return SongListScreen();
+            return BottomNavbar();
           }),
         );
       } else {
