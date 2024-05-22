@@ -63,11 +63,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: Color(0xFFe7c197),
       appBar: AppBar(
         backgroundColor: Color(0xFFb2855d),
-        centerTitle: true,
         title: Text(
           'Profile',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 16.0),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                'assets/logo.png',
+                height: 40,
+              ),
+            ),
+          ),
+        ],
+
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
