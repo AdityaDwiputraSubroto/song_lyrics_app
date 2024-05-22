@@ -5,6 +5,8 @@ import 'package:song_lyrics_app/views/list_favorite_screen.dart';
 import 'package:song_lyrics_app/views/profile_screen.dart';
 
 class BottomNavbar extends StatefulWidget {
+  int selectedIndex;
+  BottomNavbar({this.selectedIndex = 0});
   @override
   _BottomNavbarState createState() => _BottomNavbarState();
 }
@@ -17,6 +19,12 @@ class _BottomNavbarState extends State<BottomNavbar> {
     FavoriteListScreen(),
     ProfileScreen(),
   ];
+
+  @override
+  void initState() {
+    _selectedIndex = widget.selectedIndex;
+    super.initState();
+  }
 
   void _onItemTapped(int index) {
     setState(() {

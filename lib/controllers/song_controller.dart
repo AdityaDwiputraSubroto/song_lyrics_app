@@ -6,6 +6,7 @@ import 'package:song_lyrics_app/services/admin_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:song_lyrics_app/services/song_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:song_lyrics_app/views/bottom_navbar.dart';
 import 'package:song_lyrics_app/views/list_music_screen.dart';
 
 class SongController {
@@ -20,12 +21,10 @@ class SongController {
       }
       print(song.imageName);
       print('add song success');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) {
-          return SongListScreen();
-        }),
-      );
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => BottomNavbar()),
+          (route) => false);
     } catch (e) {
       print('add song error : $e');
     }
