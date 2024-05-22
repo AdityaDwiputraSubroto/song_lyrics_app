@@ -44,19 +44,15 @@ class _DetailTestScreenState extends State<DetailTestScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      border: Border.all(color: Color(0xFFb2855d)),
-                      borderRadius: BorderRadius.circular(
-                          6.0), // Menambahkan border radius
-                    ),
-                    child: Image.file(
-                      File(widget.song?.imageName ?? ''),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Color(0xFFb2855d)),
+                        borderRadius: BorderRadius.circular(
+                            6.0), // Menambahkan border radius
+                      ),
+                      child: _buildSongImage(widget.song)),
                   SizedBox(width: 16.0),
                   Expanded(
                     child: Column(
@@ -107,5 +103,21 @@ class _DetailTestScreenState extends State<DetailTestScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildSongImage(Song? song) {
+    if (song?.imageName != null) {
+      final String imagePath = song!.imageName!;
+      return Image.file(
+        File(imagePath),
+        fit: BoxFit.cover,
+      );
+    } else {
+      final String imagePath = 'assets/songs/music-default.png';
+      return Image.asset(
+        imagePath,
+        fit: BoxFit.cover,
+      );
+    }
   }
 }
