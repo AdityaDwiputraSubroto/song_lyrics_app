@@ -86,7 +86,6 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     ),
                   ),
                   style: TextStyle(color: Color(0xFF0b0302)),
-                  obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your username';
