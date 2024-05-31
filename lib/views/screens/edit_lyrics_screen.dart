@@ -6,18 +6,20 @@ import 'package:path/path.dart';
 import 'package:song_lyrics_app/controllers/song_controller.dart';
 import 'package:song_lyrics_app/models/song.dart';
 
-class AddSongTestScreen extends StatefulWidget {
+class EditSongScreen extends StatefulWidget {
+  Song song;
+  EditSongScreen({required this.song});
   @override
-  _AddSongTestScreenState createState() => _AddSongTestScreenState();
+  _EditSongScreenState createState() => _EditSongScreenState();
 }
 
-class _AddSongTestScreenState extends State<AddSongTestScreen> {
+class _EditSongScreenState extends State<EditSongScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final SongController songController = SongController();
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _artistController = TextEditingController();
-  final TextEditingController _lyricsController = TextEditingController();
-  String? _newImagePath;
+  late TextEditingController _titleController;
+  late TextEditingController _artistController = TextEditingController();
+  late TextEditingController _lyricsController = TextEditingController();
+  String? _imageName;
   String? _imagePath;
 
   Future<void> _pickImage() async {
@@ -25,35 +27,67 @@ class _AddSongTestScreenState extends State<AddSongTestScreen> {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
-      final Directory appDocDir = await getApplicationDocumentsDirectory();
-      final String appDocPath = join(appDocDir.path, 'assets/songs');
-      final String uniqueImageName =
-          '${DateTime.now().millisecondsSinceEpoch}_${image.name}';
-      final String newImagePath = join(appDocPath, uniqueImageName);
-
-      // Ensure the directory exists
-      final Directory newDir = Directory(appDocPath);
-      if (!await newDir.exists()) {
-        await newDir.create(recursive: true);
-      }
-      //final File newImage = await File(image.path).copy(newImagePath);
-
       setState(() {
-        _newImagePath = newImagePath;
+        //_newImagePath = newImagePath;
         _imagePath = image.path;
+        _imageName = image.name;
       });
     }
   }
 
-  Future<void> _saveImage(String imagePath, String newImagePath) async {
-    final File newImage = await File(imagePath).copy(newImagePath);
+  Future<void> _fetchLyricsWithLoadingIndicator(BuildContext context) async {
+    _showLoadingIndicator(context);
+
+    String? lyrics = await songController.fetchLyrics(
+      context,
+      _artistController.text.trim(),
+      _titleController.text.trim(),
+    );
+
+    _hideLoadingIndicator(context);
+
+    if (lyrics != null) {
+      setState(() {
+        _lyricsController.text = lyrics;
+      });
+    }
+  }
+
+  void _showLoadingIndicator(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: Duration(hours: 1),
+        content: Row(
+          children: [
+            CircularProgressIndicator(
+              color: Color(0xFFb2855d),
+            ),
+            SizedBox(width: 16),
+            Text('Fetching lyrics...'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _hideLoadingIndicator(BuildContext context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  }
+
+  @override
+  void initState() {
+    _titleController = TextEditingController(text: widget.song.title);
+    _artistController = TextEditingController(text: widget.song.artist);
+    _lyricsController = TextEditingController(text: widget.song.lyrics);
+    _imagePath = widget.song.imagePath ?? null;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Song'),
+        title: Text('Edit Song'),
         backgroundColor: Color(0xFFb2855d),
         actions: [
           Padding(
@@ -172,15 +206,7 @@ class _AddSongTestScreenState extends State<AddSongTestScreen> {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          String? lyrics = await songController.fetchLyrics(
-                              context,
-                              _artistController.text.trim(),
-                              _titleController.text.trim());
-                          if (lyrics != null) {
-                            setState(() {
-                              _lyricsController.text = lyrics;
-                            });
-                          }
+                          _fetchLyricsWithLoadingIndicator(context);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFFb2855d),
@@ -195,16 +221,16 @@ class _AddSongTestScreenState extends State<AddSongTestScreen> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             final song = Song(
+                              id: widget.song.id,
                               title: _titleController.text,
                               artist: _artistController.text,
                               lyrics: _lyricsController.text,
-                              imageName:
-                                  _newImagePath != null ? _newImagePath : null,
-                              favorited: false, // Default to false
+                              imagePath: _imagePath ?? null,
+                              favorited: widget.song.favorited,
                             );
                             print(_lyricsController.text);
-                            songController.addSong(context, song,
-                                _imagePath != null ? _imagePath : '');
+                            songController.editSong(
+                                context, song, _imageName ?? null);
                           }
                           //Navigator.pop(context);
                         },
@@ -215,7 +241,7 @@ class _AddSongTestScreenState extends State<AddSongTestScreen> {
                             borderRadius: BorderRadius.circular(6.0),
                           ),
                         ),
-                        child: Text('Add Song'),
+                        child: Text('Edit Song'),
                       ),
                     ],
                   ),

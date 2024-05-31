@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 
 class DatabaseHelper {
   static Database? _database;
-  static const String dbName = 'lyrics_app_test13.db';
+  static const String dbName = 'lyrics_app_test18.db';
   static const String adminTable = 'admin';
   static const String songsTable = 'songs';
 

@@ -2,15 +2,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:song_lyrics_app/models/song.dart';
 
-class DetailTestScreen extends StatefulWidget {
+class DetailScreen extends StatefulWidget {
   final Song? song;
-  const DetailTestScreen({Key? key, this.song}) : super(key: key);
+  const DetailScreen({Key? key, this.song}) : super(key: key);
 
   @override
-  State<DetailTestScreen> createState() => _DetailTestScreenState();
+  State<DetailScreen> createState() => _DetailScreenState();
 }
 
-class _DetailTestScreenState extends State<DetailTestScreen> {
+class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,8 +106,8 @@ class _DetailTestScreenState extends State<DetailTestScreen> {
   }
 
   Widget _buildSongImage(Song? song) {
-    if (song?.imageName != null) {
-      final String imagePath = song!.imageName!;
+    if (song?.imagePath != null) {
+      final String imagePath = song!.imagePath!;
       return Image.file(
         File(imagePath),
         fit: BoxFit.cover,

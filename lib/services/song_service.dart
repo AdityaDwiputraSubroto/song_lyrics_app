@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:song_lyrics_app/models/login.dart';
 import 'package:song_lyrics_app/models/song.dart';
 import 'package:sqflite/sqflite.dart';
@@ -15,7 +16,26 @@ class SongService {
     await db.insert(
       DatabaseHelper.songsTable,
       song.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      //conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> updateSong(Song song) async {
+    final db = await _dbHelper.database;
+    await db.update(
+      DatabaseHelper.songsTable,
+      song.toMap(),
+      where: 'id = ?', whereArgs: [song.id],
+      // conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> deleteSong(int id) async {
+    final db = await _dbHelper.database;
+    await db.delete(
+      DatabaseHelper.songsTable,
+      where: 'id = ?', whereArgs: [id],
+      // conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
@@ -41,7 +61,7 @@ class SongService {
         title: maps[i]['title'],
         artist: maps[i]['artist'],
         lyrics: maps[i]['lyrics'],
-        imageName: maps[i]['imageName'],
+        imagePath: maps[i]['imageName'],
         favorited: maps[i]['favorited'] == 1,
       );
     });
@@ -60,7 +80,7 @@ class SongService {
         title: maps[i]['title'],
         artist: maps[i]['artist'],
         lyrics: maps[i]['lyrics'],
-        imageName: maps[i]['imageName'],
+        imagePath: maps[i]['imageName'],
         favorited: maps[i]['favorited'] == 1,
       );
     });
@@ -78,5 +98,36 @@ class SongService {
 
   Future<void> saveImage(String imagePath, String newImagePath) async {
     final File newImage = await File(imagePath).copy(newImagePath);
+  }
+
+  Future<String> createImagePath(String imageName) async {
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final String appDocPath = join(appDocDir.path, 'assets/songs');
+    final String uniqueImageName =
+        '${DateTime.now().millisecondsSinceEpoch}_${imageName}';
+    final String newImagePath = join(appDocPath, uniqueImageName);
+    final Directory newDir = Directory(appDocPath);
+
+    if (!await newDir.exists()) {
+      await newDir.create(recursive: true);
+    }
+
+    return newImagePath;
+  }
+
+  Future<void> deleteImage(String imagePath) async {
+    try {
+      // Create a File instance with the provided path
+      File imageFile = File(imagePath);
+
+      if (await imageFile.exists()) {
+        await imageFile.delete();
+        print('Image deleted successfully.');
+      } else {
+        print('Image does not exist at the provided path.');
+      }
+    } catch (e) {
+      print('Error deleting image: $e');
+    }
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:song_lyrics_app/services/admin_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:song_lyrics_app/views/list_music_screen.dart';
-import 'package:song_lyrics_app/views/login_screen.dart';
-import 'package:song_lyrics_app/views/profile_screen.dart';
-import 'package:song_lyrics_app/views/bottom_navbar.dart';
+import 'package:song_lyrics_app/views/screens/list_music_screen.dart';
+import 'package:song_lyrics_app/views/screens/login_screen.dart';
+import 'package:song_lyrics_app/views/screens/profile_screen.dart';
+import 'package:song_lyrics_app/views/screens/bottom_navbar.dart';
 
 class AuthController {
   final AdminService _adminService = AdminService();

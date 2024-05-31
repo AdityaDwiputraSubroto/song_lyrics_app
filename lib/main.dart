@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:song_lyrics_app/views/add_lyrics_screen.dart';
-import 'package:song_lyrics_app/views/initializer.dart';
-import 'package:song_lyrics_app/views/list_favorite_screen.dart';
-import 'package:song_lyrics_app/views/list_music_screen.dart';
-import 'package:song_lyrics_app/views/profile_screen.dart';
-import 'package:song_lyrics_app/views/register_screen.dart';
+import 'package:song_lyrics_app/views/screens/add_lyrics_screen.dart';
+import 'package:song_lyrics_app/views/screens/initializer.dart';
+import 'package:song_lyrics_app/views/screens/list_favorite_screen.dart';
+import 'package:song_lyrics_app/views/screens/list_music_screen.dart';
+import 'package:song_lyrics_app/views/screens/profile_screen.dart';
+import 'package:song_lyrics_app/views/screens/register_screen.dart';
 
 void main() {
   runApp(const MyApp());

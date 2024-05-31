@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:song_lyrics_app/controllers/auth_controller.dart';
-import 'package:song_lyrics_app/views/list_music_screen.dart';
-import 'package:song_lyrics_app/views/register_screen.dart';
-import 'package:song_lyrics_app/views/login_screen.dart';
-import 'package:song_lyrics_app/views/bottom_navbar.dart';
+import 'package:song_lyrics_app/views/screens/list_music_screen.dart';
+import 'package:song_lyrics_app/views/screens/register_screen.dart';
+import 'package:song_lyrics_app/views/screens/login_screen.dart';
+import 'package:song_lyrics_app/views/screens/bottom_navbar.dart';
 
 class Initializer extends StatefulWidget {
   @override

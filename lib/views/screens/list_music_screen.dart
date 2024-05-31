@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:song_lyrics_app/views/detail_song.dart';
-import 'package:song_lyrics_app/views/add_lyrics_screen.dart';
-import '../controllers/song_controller.dart';
-import '../models/song.dart';
+import 'package:song_lyrics_app/views/screens/detail_song.dart';
+import 'package:song_lyrics_app/views/screens/add_lyrics_screen.dart';
+import 'package:song_lyrics_app/views/screens/edit_lyrics_screen.dart';
+import '../../controllers/song_controller.dart';
+import '../../models/song.dart';
 
 class SongListScreen extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _SongListScreenState extends State<SongListScreen> {
     _fetchSongs();
   }
 
-  void _fetchSongs() async {
+  Future<void> _fetchSongs() async {
     final songs = await _songController.fetchAllSongs(context);
     setState(() {
       _allSongs = songs!;
@@ -116,20 +117,55 @@ class _SongListScreenState extends State<SongListScreen> {
                     song.artist,
                     style: TextStyle(color: Color(0xFF0b0302)),
                   ),
-                  trailing: IconButton(
-                    icon: Icon(
-                      song.favorited ? Icons.favorite : Icons.favorite_border,
-                      color: song.favorited ? Colors.red : null,
-                    ),
-                    onPressed: () async {
-                      await _toggleFavorite(song.id, !song.favorited);
-                    },
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          song.favorited
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: song.favorited ? Colors.red : null,
+                        ),
+                        onPressed: () async {
+                          await _toggleFavorite(song.id, !song.favorited);
+                        },
+                      ),
+                      PopupMenuButton<String>(
+                        onSelected: (String result) async {
+                          switch (result) {
+                            case 'edit':
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditSongScreen(song: song),
+                                ),
+                              );
+                              break;
+                            case 'delete':
+                              _showDeleteConfirmationDialog(song);
+                              break;
+                          }
+                        },
+                        itemBuilder: (BuildContext context) => [
+                          PopupMenuItem(
+                            value: 'edit',
+                            child: Text('Edit'),
+                          ),
+                          PopupMenuItem(
+                            value: 'delete',
+                            child: Text('Delete'),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailTestScreen(song: song),
+                        builder: (context) => DetailScreen(song: song),
                       ),
                     );
                   },
@@ -145,7 +181,7 @@ class _SongListScreenState extends State<SongListScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddSongTestScreen()),
+            MaterialPageRoute(builder: (context) => AddSongScreen()),
           );
         },
       ),
@@ -153,8 +189,8 @@ class _SongListScreenState extends State<SongListScreen> {
   }
 
   Widget _buildSongImage(Song? song) {
-    if (song?.imageName != null) {
-      final String imagePath = song!.imageName!;
+    if (song?.imagePath != null) {
+      final String imagePath = song!.imagePath!;
       return Image.file(
         File(imagePath),
         width: 50,
@@ -175,10 +211,49 @@ class _SongListScreenState extends State<SongListScreen> {
   Future<void> _toggleFavorite(int? songId, bool isFavorite) async {
     await _songController.toggleFavorite(songId, isFavorite);
     setState(() {
-      final index = _filteredSongs.indexWhere((song) => song!.id == songId);
+      final index = _allSongs.indexWhere((song) => song!.id == songId);
       if (index != -1) {
-        _filteredSongs[index]!.favorited = isFavorite;
+        _allSongs[index]!.favorited = isFavorite;
       }
+      //_filterSongs();
+    });
+  }
+
+  Future<dynamic> _showDeleteConfirmationDialog(Song song) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Song'),
+          content: Text('Are you sure you want to delete this song?'),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: Color(0xFFb2855d)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                  backgroundColor: Colors.red, foregroundColor: Colors.white),
+              onPressed: () async {
+                await _deleteSong(song);
+                Navigator.of(context).pop();
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _deleteSong(Song song) async {
+    await _songController.deleteSong(song);
+    setState(() {
+      _allSongs.removeWhere((s) => s!.id == song.id);
+      _filteredSongs.removeWhere((s) => s!.id == song.id);
     });
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:song_lyrics_app/views/list_music_screen.dart';
-import 'package:song_lyrics_app/views/list_favorite_screen.dart';
-import 'package:song_lyrics_app/views/profile_screen.dart';
+import 'package:song_lyrics_app/views/screens/list_music_screen.dart';
+import 'package:song_lyrics_app/views/screens/list_favorite_screen.dart';
+import 'package:song_lyrics_app/views/screens/profile_screen.dart';
 
 class BottomNavbar extends StatefulWidget {
   int selectedIndex;

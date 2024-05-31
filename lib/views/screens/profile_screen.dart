@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:song_lyrics_app/controllers/auth_controller.dart';
-import 'package:song_lyrics_app/views/edit_password_screen.dart';
-import 'package:song_lyrics_app/views/edit_username_screen.dart';
-import 'package:song_lyrics_app/views/verification_screen.dart';
+import 'package:song_lyrics_app/views/screens/edit_password_screen.dart';
+import 'package:song_lyrics_app/views/screens/edit_username_screen.dart';
+import 'package:song_lyrics_app/views/screens/verification_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
