@@ -3,9 +3,9 @@ import 'package:song_lyrics_app/controllers/auth_controller.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController _usernameController =
-      TextEditingController(text: 'admin');
+      TextEditingController(text: '');
   final TextEditingController _passwordController =
-      TextEditingController(text: 'admin123');
+      TextEditingController(text: '');
   final AuthController _authController = AuthController();
   final _formKey = GlobalKey<FormState>();
 
